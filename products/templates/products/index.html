@@ -13,6 +13,34 @@
 </head>
 <body>
     <div class="l-content">
+        <form class="pure-form pure-form-aligned" method="POST" action="{% url 'products:add_product' %}">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Add Product</legend>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <div class="pure-control-group">
+                    <label for="aligned-name">Name</label>
+                    <input type="text" name="name" id="aligned-name" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-category">Category</label>
+                    <input type="text" name="category" id="aligned-category" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-price">Unit Price</label>
+                    <input type="number" name="unit_price" min="0" value="0" step="0.01" id="aligned-price" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-stock">Current Stock</label>
+                    <input type="number" name="current_stock" min="0" value="0" step="1" id="aligned-stock" required/>
+                </div>
+                <div class="pure-controls">
+                    <button type="submit" class="pure-button pure-button-primary">Submit</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="l-content">
         {% if product_list %}
             <table class="pure-table pure-table-bordered">
                 <thead>
