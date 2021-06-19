@@ -1,18 +1,9 @@
+{% extends 'base.html' %}
 {% load icon %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Products</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
-    <style>
-        .l-content {
-          display: flex;
-          justify-content: center;
-        }
-    </style>
-</head>
-<body>
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
     <div class="l-content">
         <form class="pure-form pure-form-aligned" method="POST" action="{% url 'products:add_product' %}">
             {% csrf_token %}
@@ -41,6 +32,7 @@
             </fieldset>
         </form>
     </div>
+
     <div class="l-content">
         {% if product_list %}
             <table class="pure-table pure-table-bordered">
@@ -76,5 +68,4 @@
             <h3><strong>{{ no_product_message }}</strong></h3>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}

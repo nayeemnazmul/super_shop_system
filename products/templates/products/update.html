@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Product</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
-    <style>
-        .l-content {
-          display: flex;
-          justify-content: center;
-        }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Update Product{% endblock %}
+
+{% block content %}
     <div class="l-content">
         <form class="pure-form pure-form-aligned" method="POST" action="{% url 'products:update_product' product.id %}">
             {% csrf_token %}
@@ -44,5 +35,4 @@
             </fieldset>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}
