@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Product</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+    <style>
+        .l-content {
+          display: flex;
+          justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="l-content">
+        <form class="pure-form pure-form-aligned" method="POST" action="{% url 'products:update_product' product.id %}">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Update Product</legend>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <div class="pure-control-group">
+                    <label for="aligned-name">Code</label>
+                    <input type="text" name="name" id="aligned-name" value="{{ product.code }}" readonly/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-name">Name</label>
+                    <input type="text" name="name" id="aligned-name" value="{{ product.name }}" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-category">Category</label>
+                    <input type="text" name="category" id="aligned-category" value="{{ product.category }}" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-price">Unit Price</label>
+                    <input type="number" name="unit_price" min="0" value="{{ product.unit_price }}" step="0.01" id="aligned-price" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-stock">Current Stock</label>
+                    <input type="number" name="current_stock" min="0" value="{{ product.current_stock }}" step="1" id="aligned-stock" required/>
+                </div>
+                <div class="pure-controls">
+                    <button type="submit" class="pure-button pure-button-primary">Update</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>

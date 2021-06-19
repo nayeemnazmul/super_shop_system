@@ -47,3 +47,26 @@ def delete(request, product_id):
     return redirect('products:product_list')
 
 
+def update(request, product_id):
+    product = Product.objects.get(pk=product_id)
+
+    if request.POST:
+        product.name = request.POST['name']
+        product.category = request.POST['category']
+        product.unit_price = request.POST['unit_price']
+        product.current_stock = request.POST['current_stock']
+
+        try:
+            product.save()
+        except ValidationError as e:
+            context = {
+                'error_message': str(e.messages)
+            }
+            return redirect('products:product_list', context)
+        else:
+            return redirect('products:product_list')
+    else:
+        context = {
+            'product': product
+        }
+        return render(request, 'products/update.html', context)

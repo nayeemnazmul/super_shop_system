@@ -64,7 +64,10 @@
                             <td>{{ product.category }}</td>
                             <td>{{ product.unit_price }}</td>
                             <td>{{ product.current_stock }}</td>
-                            <td><a href="{% url 'products:delete_product' product.id %}">{% icon "trash-2" %}</a></td>
+                            <td>
+                                <a href="{% url 'products:update_product' product.id %}">{% icon "eye" %}</a>
+                                <a href="{% url 'products:delete_product' product.id %}">{% icon "trash-2" %}</a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
