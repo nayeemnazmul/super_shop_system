@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+    <style>
+        .l-content {
+          display: flex;
+          justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="l-content">
+        {% if product_list %}
+            <table class="pure-table pure-table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price/Unit</th>
+                        <th>Current Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in product_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ product.code }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>{{ product.unit_price }}</td>
+                            <td>{{ product.current_stock }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3><strong>No product found, add some.</strong></h3>
+        {% endif %}
+    </div>
+</body>
+</html>
