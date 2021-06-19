@@ -1,3 +1,4 @@
+{% load icon %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +52,7 @@
                         <th>Category</th>
                         <th>Price/Unit</th>
                         <th>Current Stock</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,12 +64,13 @@
                             <td>{{ product.category }}</td>
                             <td>{{ product.unit_price }}</td>
                             <td>{{ product.current_stock }}</td>
+                            <td><a href="{% url 'products:delete_product' product.id %}">{% icon "trash-2" %}</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% else %}
-            <h3><strong>No product found, add some.</strong></h3>
+            <h3><strong>{{ no_product_message }}</strong></h3>
         {% endif %}
     </div>
 </body>

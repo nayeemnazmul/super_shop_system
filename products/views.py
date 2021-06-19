@@ -1,21 +1,27 @@
 import random
 import string
 
-from django.shortcuts import render, redirect, get_list_or_404
+from django.shortcuts import render, redirect, get_list_or_404, Http404
 from django.core.exceptions import ValidationError
 from .models import Product
 
 
 def index(request):
-    product_list = get_list_or_404(Product)
-    context = {
-        'product_list': product_list,
-    }
+    try:
+        product_list = get_list_or_404(Product)
+    except Http404:
+        context = {
+            'no_product_message': 'No product found, add some.',
+        }
+    else:
+        context = {
+            'product_list': product_list,
+        }
     return render(request, 'products/index.html', context)
 
 
 def add(request):
-    code = random.choice(string.ascii_letters) + str(random.randint(1, 1000)) + random.choice(string.ascii_letters)
+    code = ''.join(random.choices(string.ascii_letters+string.digits, k=6))
     name = request.POST['name']
     category = request.POST['category']
     unit_price = request.POST['unit_price']
@@ -32,4 +38,12 @@ def add(request):
         return redirect('products:product_list', context)
     else:
         return redirect('products:product_list')
+
+
+def delete(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    product.delete()
+
+    return redirect('products:product_list')
+
 
