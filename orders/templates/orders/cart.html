@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load icon %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+    <div class="l-content">
+        <form class="pure-form pure-form-aligned product-select-form">
+            <fieldset>
+                <legend>Select Product</legend>
+                <strong><p class="error" style="color: red"></p></strong>
+{#                {% if error_message %}<p style="color: red"><strong>{{ error_message }}</strong></p>{% endif %}#}
+                <div class="pure-control-group">
+                    <label for="aligned-product-list">Select a Product:</label>
+                    <select class="product_id" name="product_id" id="aligned-product-list" required>
+                        <option value="">---</option>
+                        {% for product in product_list %}
+                            <option value="{{ product.id }}">{{ product.code }} - {{ product.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-quantity">Quantity</label>
+                    <input type="number" name="quantity" min="1" step="1" id="aligned-quantity" class="quantity" required/>
+                </div>
+                <div class="pure-controls">
+                    <button type="submit" class="pure-button pure-button-primary add-cart">Add to Cart</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <br>
+    <div class="l-content">
+        <form class="pure-form pure-form-aligned" method="POST" action="{% url 'orders:add_order' %}">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Add Order</legend>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                <div class="pure-control-group">
+                    <label for="aligned-name">Name</label>
+                    <input type="text" name="customer_name" id="aligned-name" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-phone">Phone</label>
+                    <input type="tel" name="customer_phone" id="aligned-phone" pattern="[0-9]{11}" required/>
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-price">Email</label>
+                    <input type="email" name="customer_email" id="aligned-price" required/>
+                </div>
+                <div class="pure-control-group cart">
+                    <table class="pure-table pure-table-bordered cart-table">
+                        <thead>
+                            <tr>
+                                <th>Cart</th>
+                            </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Unit Price</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pure-controls">
+                    <button type="submit" class="pure-button pure-button-primary">Submit</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // gets the product details of selected product as json object on ajax call
+            $('.product-select-form').submit(function () {
+                event.preventDefault();
+
+                // removes the previous warning message
+                $('.error').text("");
+
+                let product_id = $('.product_id').val();
+                let quantity = $('.quantity').val();
+
+                if(product_id == '' || quantity == ''){
+                    $('.error').text("Please select a product and enter a quantity.");
+                }
+                else{
+                    let data = {
+                        quantity: quantity
+                    }
+
+                    $.get('/products/json-detail/' + product_id + '/', data, function (data, status) {
+                        if(status == 'success') {
+                            if(data.error_message){
+                                // shows warning to user if quantity is larger than stock
+                                $('.error').text(data.error_message);
+                                alert(data.error_message);
+                            }
+                            else{
+                                add_product_in_cart_table(data, quantity);
+                            }
+                         }
+                        else{
+                            $('.error').text('Product fetch failed.')
+                         }
+                    });
+                }
+
+            });
+
+            /*
+            * add a row on the cart table as ordered product with ordered quantity and price
+            * product param receives the product data as json object
+            * quantity is from user input
+            * */
+            let rowCount = 1;
+            function add_product_in_cart_table(product, quantity){
+                var cart_table_body = $('.cart-table tbody');
+                var cart_row = cart_table_body.find(`#${product.id}`);
+                if(cart_row.length)
+                {
+                    cart_row.remove();
+                    rowCount = 1;
+                }
+
+                cart_row = `<tr id="${product.id}">
+                                    <td>${rowCount}</td>
+                                    <td>${product.code}</td>
+                                    <td>${product.name} <input type="hidden" name="product_id" value="${product.id}"></td>
+                                    <td>${product.unit_price}</td>
+                                    <td>${quantity} <input type="hidden" name="quantity" value="${quantity}"></td>
+                                    <td>${product.unit_price*quantity}</td>
+                                    <td id="delete-row">{% icon "trash-2"|safe %}</td>
+                                 </tr>`
+
+                cart_table_body.append(cart_row);
+
+                rowCount++;
+            }
+
+            /*
+            * adds a click event to delete icon of each row
+            * deletes the row from DOM if delete icon of any row on click event
+            * */
+            $(".cart-table").on("click", "#delete-row", function() {
+               $(this).closest("tr").remove();
+             });
+        });
+
+    </script>
+{% endblock %}

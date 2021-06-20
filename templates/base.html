@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +7,18 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
     <style>
         .l-content {
-          display: flex;
-          justify-content: center;
+            display: flex;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
-    <div>
+    <div class="main">
         {% block content %}{% endblock %}
     </div>
 </body>
+{#<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>#}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'script.js' %}"></script>
+{% block javascript %}{% endblock %}
 </html>
