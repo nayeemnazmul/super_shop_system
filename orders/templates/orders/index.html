@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load icon %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+    <div class="l-content">
+        {% if order_list %}
+            <table class="pure-table pure-table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Code</th>
+                        <th>Customer Name</th>
+                        <th>Customer Phone</th>
+                        <th>Customer Email</th>
+                        <th>Total Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in order_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ order.code }}</td>
+                            <td>{{ order.customer_name }}</td>
+                            <td>{{ order.customer_phone }}</td>
+                            <td>{{ order.customer_email }}</td>
+                            <td>{{ order.total_price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3><strong>{{ no_order_message }}</strong></h3>
+        {% endif %}
+    </div>
+{% endblock %}
