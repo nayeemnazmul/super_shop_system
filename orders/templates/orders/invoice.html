@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+    <div class="l-content">
+        <div class="pure-g">
+            <div class="pure-u-1-24">
+
+            </div>
+            <div class="pure-u-22-24">
+                <div class="pure-u-1 qrcode">
+                    <img src="{% static order.customer_info_in_qrcode_path %}" alt="customer-info">
+                </div>
+
+                <div class="pure-u-1 invoice-table">
+                        <table class="pure-table pure-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>QTY</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for orderproduct in order.orderproduct_set.all %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ orderproduct.product.name }}</td>
+                                        <td>{{ orderproduct.product.unit_price|intcomma }}</td>
+                                        <td>{{ orderproduct.quantity|intcomma }}</td>
+                                        <td>{{ orderproduct.total_price|intcomma }}</td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="4">Amount: {{ order.total_price_in_word|capfirst }} taka only</td>
+                                    <td>{{ order.total_price|intcomma }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -27,6 +27,7 @@
                             <td>{{ order.customer_phone }}</td>
                             <td>{{ order.customer_email }}</td>
                             <td>{{ order.total_price }}</td>
+                            <td><a href="{% url 'orders:generate_invoice' order.id %}">{% icon 'printer'|safe %}</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

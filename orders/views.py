@@ -2,6 +2,7 @@ import random
 import string
 
 from django.shortcuts import render, get_list_or_404, Http404, redirect
+
 from .models import Order, OrderProduct
 from products.models import Product
 
@@ -57,7 +58,6 @@ def add_order(request):
 
         product.current_stock = (product.current_stock - quantity) if (product.current_stock - quantity) >= 0 else 0
         product.save()
-
         order_product = OrderProduct(order=order, product=product, quantity=quantity, total_price=order_product_total_price)
         order_product.save()
 
@@ -66,3 +66,12 @@ def add_order(request):
 
     return redirect('orders:order_list')
 
+
+def generate_invoice(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    context = {
+        'order': order,
+    }
+
+    return render(request, 'orders/invoice.html', context)
