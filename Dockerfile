@@ -21,6 +21,7 @@ ADD . /opt/app/super_shop_system
 WORKDIR /opt/app/super_shop_system
 RUN pip install -r requirements.txt --cache-dir /opt/app/pip_cache
 RUN python manage.py migrate
+RUN python manage.py collectstatic --no-input
 RUN chown -R www-data:www-data /opt/app
 RUN chmod 755 start-server.sh
 
