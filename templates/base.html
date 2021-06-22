@@ -14,22 +14,25 @@
 </head>
 <body>
     <div>
-        <div class="header">
-            <div class="pure-menu pure-menu-horizontal">
-                <a href="{% url 'home' %}" class="pure-menu-heading pure-menu-link">Super Shop</a>
-                <ul class="pure-menu-list">
-                    <li class="pure-menu-item">
-                        <a href="{% url 'products:product_list' %}" class="pure-menu-link">Products</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="{% url 'orders:order_list' %}" class="pure-menu-link">Orders</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="{% url 'orders:view_cart' %}" class="pure-menu-link">Cart</a>
-                    </li>
-                </ul>
+        {% block header-menu %}
+            <div class="header">
+                <div class="pure-menu pure-menu-horizontal">
+                    <a href="{% url 'home' %}" class="pure-menu-heading pure-menu-link">Super Shop</a>
+                    <ul class="pure-menu-list">
+                        <li class="pure-menu-item">
+                            <a href="{% url 'products:product_list' %}" class="pure-menu-link">Products</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="{% url 'orders:order_list' %}" class="pure-menu-link">Orders</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="{% url 'orders:view_cart' %}" class="pure-menu-link">Cart</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
+        {% endblock %}
+
         <div class="pure-g pure-u-1">
             {% block content %}{% endblock %}
         </div>
