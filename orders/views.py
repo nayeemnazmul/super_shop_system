@@ -1,7 +1,10 @@
 import random
 import string
+import pdfkit
 
-from django.shortcuts import render, get_list_or_404, Http404, redirect
+from django.shortcuts import render, get_list_or_404, Http404, redirect, HttpResponse
+from django.template.loader import render_to_string
+from django.utils import timezone
 
 from .models import Order, OrderProduct
 from products.models import Product
@@ -74,4 +77,18 @@ def generate_invoice(request, order_id):
         'order': order,
     }
 
-    return render(request, 'orders/invoice.html', context)
+    # TODO implement html rendering, for this we need, 'customer_info_in_qrcode_url' property in order model
+    # if 'html' in request.GET:
+    #     return render(request, 'orders/invoice.html', context)
+
+    rendered_html = render_to_string('orders/invoice.html', context, request)
+    pdf = pdfkit.from_string(rendered_html, output_path=None)
+    pdf_response = HttpResponse(pdf, content_type='application/pdf')
+
+    # attachment for direct download
+    # inline for in-browser view
+    content = "attachment;filename=invoice-{code}-{at}.pdf".format(code=order.code, at=timezone.now()
+                                                                   .strftime('%Y-%m-%d-%I-%M'))
+    pdf_response['Content-Disposition'] = content
+
+    return pdf_response

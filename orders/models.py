@@ -1,6 +1,8 @@
 import os
 
 import qrcode
+from qrcode.image.pure import PymagingImage
+from qrcode.image.svg import SvgPathFillImage, SvgImage, SvgPathImage, SvgFillImage, SvgFragmentImage
 from num2words import num2words
 
 from django.db import models
@@ -23,19 +25,34 @@ class Order(models.Model):
     def total_price_in_word(self):
         return num2words(self.total_price)
 
+    # pdf needs full path of generated svg file to render correctly
     @property
     def customer_info_in_qrcode_path(self):
-        qrcode_file_name = 'qrcode-{order_code}.png'.format(order_code=self.code)
+        qrcode_file_name = 'qrcode-{order_code}.svg'.format(order_code=self.code)
+        qrcode_url = os.path.join(settings.MEDIA_URL, qrcode_file_name)
         qrcode_path = os.path.join(settings.MEDIA_ROOT, qrcode_file_name)
 
-        if os.path.exists(qrcode_path):
-            return qrcode_path
+        try:
+            os.mkdir(settings.MEDIA_ROOT)
+        except FileExistsError:
+            if os.path.isfile(qrcode_path):
+                return qrcode_path
+            else:
+                self.generate_qrcode_for_customer_info(qrcode_path)
+                return qrcode_path
 
+    # TODO to show svg in html correctly, url-format: /media/example.svg
+    # @property
+    # def customer_info_in_qrcode_url(self):
+    #     pass
+
+    def generate_qrcode_for_customer_info(self, qrcode_path):
         qr = qrcode.QRCode(
             version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
             box_size=10,
             border=4,
+            image_factory=SvgPathImage,
         )
 
         customer_info = {
@@ -49,8 +66,6 @@ class Order(models.Model):
 
         img = qr.make_image(fill_color="black", back_color="white")
         img.save(qrcode_path)
-
-        return qrcode_path
 
 
 class OrderProduct(models.Model):
