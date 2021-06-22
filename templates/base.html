@@ -13,12 +13,30 @@
     </style>
 </head>
 <body>
-    <div class="main">
-        {% block content %}{% endblock %}
+    <div>
+        <div class="header">
+            <div class="pure-menu pure-menu-horizontal">
+                <a href="{% url 'home' %}" class="pure-menu-heading pure-menu-link">Super Shop</a>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                        <a href="{% url 'products:product_list' %}" class="pure-menu-link">Products</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="{% url 'orders:order_list' %}" class="pure-menu-link">Orders</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="{% url 'orders:view_cart' %}" class="pure-menu-link">Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="pure-g pure-u-1">
+            {% block content %}{% endblock %}
+        </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+    {% block javascript %}{% endblock %}
 </body>
-{#<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>#}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="{% static 'script.js' %}"></script>
-{% block javascript %}{% endblock %}
 </html>

@@ -20,7 +20,7 @@ from django.urls import path, include
 from orders.views import view_cart
 
 urlpatterns = [
-    path('', view_cart),
+    path('', view_cart, name='home'),
     path('orders/', include('orders.urls')),
     path('products/', include('products.urls')),
     path('admin/', admin.site.urls),
