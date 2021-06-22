@@ -122,15 +122,18 @@
             * product param receives the product data as json object
             * quantity is from user input
             * */
-            let rowCount = 1;
+            let rowCount = 0;
             function add_product_in_cart_table(product, quantity){
                 var cart_table_body = $('.cart-table tbody');
                 var cart_row = cart_table_body.find(`#${product.id}`);
+
+                // TODO: table cart has a bug in row serial count
                 if(cart_row.length)
                 {
                     cart_row.remove();
-                    rowCount = 1;
                 }
+
+                rowCount = cart_table_body.children().length + 1
 
                 cart_row = `<tr id="${product.id}">
                                     <td>${rowCount}</td>
