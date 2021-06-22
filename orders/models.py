@@ -1,8 +1,7 @@
 import os
 
 import qrcode
-from qrcode.image.pure import PymagingImage
-from qrcode.image.svg import SvgPathFillImage, SvgImage, SvgPathImage, SvgFillImage, SvgFragmentImage
+from qrcode.image.svg import SvgPathImage
 from num2words import num2words
 
 from django.db import models
