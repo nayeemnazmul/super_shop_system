@@ -66,7 +66,7 @@ Quit the server with CONTROL-C.
 ### Demo Screenshots
 
 #### Products
-![Product List](https://i.imgur.com/bTp7dGK.png "Product list")
+![Product List](https://i.imgur.com/XkIXQvx.png "Product list")
 #### Orders
 ![Order List](https://i.imgur.com/HlfVqpV.png "Order List")
 #### Cart
